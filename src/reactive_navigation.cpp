@@ -8,6 +8,7 @@ double obstacle_distance;
 
 void laserCallback(const sensor_msgs::LaserScan::ConstPtr& msg){
   obstacle_distance = *std::min_element (msg->ranges.begin(), msg->ranges.begin());
+  ROS_INFO("distance %lf", *std::min_element (msg->ranges.begin(), msg->ranges.begin()));
 }
 
 int main(int argc, char **argv){
@@ -19,7 +20,8 @@ int main(int argc, char **argv){
   //Publisher for /cmd_vel
   ros::Publisher cmd_vel_pub = n.advertise<geometry_msgs::Twist>("cmd_vel", 100);
   //Subscriber for /base_scan
-  ros::Subscriber laser_sub = n.subscribe("base_scan", 100, laserCallback);
+  ros::Subscriber laser_sub = n.subscribe("base_scan_0", 100, laserCallback);
+  
 
   ros::Rate loop_rate(10); //10 Hz
 
@@ -28,12 +30,12 @@ int main(int argc, char **argv){
 
   while (ros::ok()){
     
-      if(obstacle_distance < 1.0){
-          cmd_vel_msg.linear.x = 0.0;
+      if(obstacle_distance > 1){
+          cmd_vel_msg.linear.y = 0.0;
           cmd_vel_msg.angular.z = 0.0;
           
       }else{
-            cmd_vel_msg.linear.x = 1.5;
+            cmd_vel_msg.linear.y = 3.5;
             cmd_vel_msg.angular.z = 0.0;
       }
 

@@ -41,5 +41,5 @@ bitmap "../maps/broughton.pgm"
 )
 
 include "../robots/laha_robot.inc"
-laha_robot (pose [6.0 5.0 0.000 90.000] name "robot")
+laha_robot (pose [6.0 5.0 0.000 0.000] name "robot")
 
